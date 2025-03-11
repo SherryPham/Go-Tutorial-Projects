@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -41,9 +42,14 @@ func register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Username already exists", er)
 		return
 	}
+
+	hashedPassword, _ := hashPassword(password)
+	users[username] = Login{HashedPassword: hashedPassword}
+	fmt.Fprintf(w, "User registered successfully!") 
 }
 
-func login(w http.ResponseWriter, r *http.Request) {}
+func login(w http.ResponseWriter, r *http.Request) {
+}
 
 func logout(w http.ResponseWriter, r *http.Request) {}
 

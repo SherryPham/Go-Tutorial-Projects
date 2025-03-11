@@ -23,10 +23,30 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
-func register(w http.ResponseWriter, r *http.Request) {}
+func register(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Invalid method", er)
+		return
+	}
+
+	username := r.FormValue("username")
+	password := r.FormValue("password")
+	if len (username) < 8 || len(password) < 8 {
+		http.Error(w, "Username and password must be at least 8 characters long", er)
+		return
+	}
+
+	if _, ok := users[username]; ok {
+		er := http.statusConflict
+		http.Error(w, "Username already exists", er)
+		return
+	}
+}
 
 func login(w http.ResponseWriter, r *http.Request) {}
 
 func logout(w http.ResponseWriter, r *http.Request) {}
 
 func protected(w http.ResponseWriter, r *http.Request) {}
+
+

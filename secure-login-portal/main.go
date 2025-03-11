@@ -1,14 +1,12 @@
-pakage main
+package main
 
 import (
-	"fmt"
 	"net/http"
-	"time"
 )
 
 type Login struct {
 	HashedPassword string
-	Session string
+	SessionToken string
 	CRSFToken string
 }
 
@@ -25,6 +23,7 @@ func main() {
 
 func register(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
+		er := http.StatusMethodNotAllowed
 		http.Error(w, "Invalid method", er)
 		return
 	}
@@ -32,12 +31,13 @@ func register(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("username")
 	password := r.FormValue("password")
 	if len (username) < 8 || len(password) < 8 {
+		er := http.StatusNotAcceptable
 		http.Error(w, "Username and password must be at least 8 characters long", er)
 		return
 	}
 
 	if _, ok := users[username]; ok {
-		er := http.statusConflict
+		er := http.StatusConflict
 		http.Error(w, "Username already exists", er)
 		return
 	}
